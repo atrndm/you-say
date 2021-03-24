@@ -1,13 +1,22 @@
-import express from "express";
+import 'module-alias/register';
+import path from 'path';
+import * as dotenv from "dotenv";
+dotenv.config({ path: path.resolve(__dirname, '../', `.env.${process.env.NODE_ENV}`)});
+
+import express from 'express';
+import logger, { requestLoggerMiddleware } from 'services/logger';
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
-app.get( "/", ( req, res ) => {
-    res.send( "Hello world!" );
+app.use(requestLoggerMiddleware);
+
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
+app.get( '/', ( req, res ) => {
+    res.send( 'Hello world!' );
 } );
 
 app.listen( port, () => {
-  // tslint:disable-next-line:no-console
-  console.log( `server started at http://localhost:${ port }` );
+  logger.info( `server started at http://localhost:${ port }` );
 });
