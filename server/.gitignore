@@ -9,4 +9,3 @@
 .env.*
 logs/
 npm-debug.log*
-/logs
