@@ -7,6 +7,7 @@ const levels = {
   warn: 1,
   info: 2,
   http: 3,
+  db: 3,
   verbose: 4,
   debug: 5,
   silly: 6
@@ -36,6 +37,10 @@ const transports = [
   new winston.transports.File({
     filename: 'logs/error.log',
     level: 'error',
+  }),
+  new winston.transports.File({
+    filename: 'logs/db.log',
+    level: 'db',
   }),
   new winston.transports.File({ filename: 'logs/all.log', level: LOG_LEVEL }),
 ];

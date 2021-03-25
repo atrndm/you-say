@@ -9,10 +9,14 @@
       "outDir": "dist",
       "baseUrl": ".",
       "paths": {
-          "services/*": ["src/services/*"],
-          "*": [
-              "node_modules/*"
-          ]
+        "src/*": ["src/*"],
+        "api/*": ["src/api/*"],
+        "models/*": ["src/db/models/*"],
+        "services/*": ["src/services/*"],
+        "middleware/*": ["src/middleware/*"],
+        "*": [
+            "node_modules/*"
+        ]
       }
   },
   "include": [
