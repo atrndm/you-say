@@ -1,15 +1,15 @@
 import 'module-alias/register';
 import path from 'path';
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 const dotEnvPath = path.resolve(__dirname, '../', `.env.${process.env.NODE_ENV || 'development'}`);
 dotenv.config({ path: dotEnvPath});
 
 import express from 'express';
 import logger, { requestLoggerMiddleware } from 'services/logger';
-import swaggerUIMiddleware from 'middleware/swagger-ui';
-import { pollsRouter } from 'api/poll';
 import { errorHandlerMiddleware } from 'services/error-handler';
+import swaggerUIMiddleware from 'middleware/swagger-ui';
 import { connectToDatabase } from 'src/db/connect-db';
+import { pollsRouter } from 'api/poll';
 
 connectToDatabase();
 
@@ -26,5 +26,5 @@ app.use('/api-docs', ...swaggerUIMiddleware());
 app.use(errorHandlerMiddleware);
 
 app.listen( port, () => {
-  logger.info( `server started at http://localhost:${ port }` );
+  logger.info( `server started at http://localhost:${port}` );
 });

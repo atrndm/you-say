@@ -1,22 +1,12 @@
 import swaggerUI from 'swagger-ui-express';
-import swaggerJsdoc from 'swagger-jsdoc';
+import yaml, { JSON_SCHEMA } from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
 
-const options = {
-  swaggerDefinition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'YouSay API Docs',
-      version: '0.1.0',
-      description:
-        'This is a simple CRUD API application made with Express and documented with Swagger',
-    },
-  },
-  apis: ['src/api/*/*.swagger.ts'],
-};
-
-const specs = swaggerJsdoc(options);
+const yamlDocument = fs.readFileSync(path.resolve(__dirname, '../../swagger.yml'), 'utf-8');
+const swaggerDocument = yaml.load(yamlDocument, { json: true, schema: JSON_SCHEMA }) as object;
 
 export default () => [
   swaggerUI.serve,
-  swaggerUI.setup(specs)
+  swaggerUI.setup(swaggerDocument)
 ];
