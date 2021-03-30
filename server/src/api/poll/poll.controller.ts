@@ -17,9 +17,25 @@ export const findPollBySlug = async (req:Request, res:Response, next:NextFunctio
     const { pollSlug } = req.params;
     const poll = await pollService.findPollBySlug(pollSlug);
     if (!poll) {
-      throw new ErrorNotFound('Poll not found');
+      throw new ErrorNotFound('Poll not found', { slug: pollSlug });
     }
     res.send(poll);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const updatePoll = async (req:Request, res:Response, next:NextFunction) => {
+  try {
+    const { pollSlug } = req.params;
+    const { body } = req;
+    const updatedPoll = await pollService.updatePoll({ slug: pollSlug }, body);
+
+    if (!updatedPoll) {
+      throw new ErrorNotFound('Poll not found', { slug: pollSlug });
+    }
+
+    res.status(200).send(updatedPoll);
   } catch (error) {
     next(error);
   }

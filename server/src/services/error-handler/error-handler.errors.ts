@@ -1,30 +1,23 @@
 /* tslint:disable:max-classes-per-file */
+
+import { VError } from 'verror';
 export interface CustomError {
+  name: string,
   statusCode: number,
   message: string,
   data?: any,
 }
 
-export class DatabaseError extends Error implements CustomError {
-  statusCode;
-  data;
 
-  constructor(msg:string, data?:any) {
-    super(msg);
+export class DatabaseError extends VError {
 
-    this.statusCode = 500;
-    this.data = data;
+  get statusCode() {
+    return 500;
   }
 }
 
-export class ErrorNotFound extends Error implements CustomError {
-  statusCode;
-  data;
-
-  constructor(msg:string, data?:any) {
-    super(msg);
-
-    this.statusCode = 404;
-    this.data = data;
+export class ErrorNotFound extends VError {
+  get statusCode() {
+    return 404;
   }
 }

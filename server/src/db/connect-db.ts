@@ -13,7 +13,7 @@ export const connectToDatabase = () => {
         options
     };
 
-    logger.info({
+    logger.database({
         dbQuery: set
     });
   });

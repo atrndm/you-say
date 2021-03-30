@@ -44,6 +44,31 @@ paths:
           $ref: "#/components/responses/ResponseNotFound"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
+    post:
+      summary: update a single poll by slug
+      parameters:
+        - name: slug
+          in: path
+          description: Poll's url path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Poll"
+      responses:
+        200:
+          description: Poll successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Poll"
+        404:
+          $ref: "#/components/responses/ResponseNotFound"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
 components:
   schemas:
     Poll:
