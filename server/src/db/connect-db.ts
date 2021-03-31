@@ -3,6 +3,10 @@ import { connectionString } from './config';
 import logger from 'services/logger';
 import { isProduction } from 'src/config';
 
+import './models/poll';
+import './models/question';
+import './models/answer';
+
 export const connectToDatabase = () => {
   mongoose.set('debug', (coll:any, method:any, query:any, doc:any, options:any) => {
     const set = {
@@ -25,5 +29,6 @@ export const connectToDatabase = () => {
     useCreateIndex: true,
     useFindAndModify: false,
     autoIndex: !isProduction,
-   });
+  });
+
 }

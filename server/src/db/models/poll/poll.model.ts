@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import { PollStatus } from './poll.types';
+import mongoose, { Schema } from 'mongoose';
+import { PollStatus, PollModel } from './poll.types';
 
-const PollSchema = new mongoose.Schema(
+const PollSchema = new Schema(
 	{
     title: {
       type: String,
@@ -17,9 +17,15 @@ const PollSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-	},
-	{ collection: 'polls' }
+    questions:  [{
+      type: Schema.Types.ObjectId,
+      ref: 'Question',
+    }]
+	}, {
+    collection: 'polls',
+    timestamps: true,
+  }
 );
 
-const PollModel = mongoose.model('Poll', PollSchema);
+const PollModel = mongoose.model<PollModel>('Poll', PollSchema);
 export default PollModel;
