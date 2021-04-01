@@ -1,9 +1,25 @@
+/**
+ * DAL for the Question Entity
+ */
 import Question, { QuestionModel } from 'models/question';
-import { DatabaseError, ErrorNotFound } from 'services/error-handler';
+import { DatabaseError } from 'services/error-handler';
+import { createAnswers } from 'services/answer-service';
 import { QuestionFindQuery } from './question-service.types';
 
 export const createQuestion = async (payload:QuestionModel) => {
+  const { poll, title, answers } = payload;
+
   try {
+    const question = await Question.create({ title, poll });
+
+    if (answers) {
+      const answersPayload = answers.map(answer => ({...answer, question: question._id}));
+      const answersRes = await createAnswers(answersPayload);
+      question.answers = answersRes;
+      question.populate('answers');
+      await question.save();
+    }
+
     return await Question.create(payload);
   } catch (error) {
     throw new DatabaseError(error, 'Error creating poll');
@@ -12,7 +28,9 @@ export const createQuestion = async (payload:QuestionModel) => {
 
 export const createQuestions = async (payload:QuestionModel[]) => {
   try {
-    return await Question.insertMany(payload);
+    const promises = payload.map(createQuestion);
+    const resolvedPromises = await Promise.all(promises);
+    return resolvedPromises;
   } catch (error) {
     throw new DatabaseError(error, 'Error creating poll');
   }

@@ -72,19 +72,57 @@ paths:
 components:
   schemas:
     Poll:
-      type: object,
+      type: object
       properties:
         title:
-          type: string,
+          type: string
         status:
-          type: string,
+          type: string
           enum: [draft, active, completed]
         slug:
-          type: string,
+          type: string
+        questions:
+          $ref: '#/components/schemas/Questions'
       example:
         title: The poll's title
         status: active
         slug: the-poll-url
+        questions:
+          - title: First Question
+            answers:
+              - title: First Answer
+              - title: Second Answer
+          - title: Second Question
+            answers:
+              - title: First Answer
+              - title: Second Answer
+    Question:
+      type: object
+      properties:
+        title:
+          type: string
+        answers:
+          $ref: '#/components/schemas/Answer'
+      example:
+        title: Question number 1
+        answers:
+          - title: First Answer
+          - title: Second Answer
+    Questions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Question'
+    Answer:
+      type: object
+      properties:
+        title:
+          type: string
+      example:
+        title: Answer number 1
+    Answers:
+      type: array
+      items:
+        $ref: '#/components/schemas/Answer'
     ResponseGeneralError:
       type: object
       properties:

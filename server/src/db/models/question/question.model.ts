@@ -12,6 +12,10 @@ const QuestionSchema = new Schema(
       ref: 'Poll',
       required: true,
     },
+    answers: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Answer'
+    }],
 	}, {
     collection: 'questions',
     timestamps: true,
