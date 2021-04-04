@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import CustomSchema from '../../custom-schema';
-import { PollStatus, PollModel } from './poll.types';
+import mongoose, { Schema, Types, Model } from 'mongoose';
+import { PollStatus, IPollModel, IPollDocument } from './poll.types';
+import { QuestionModel } from 'models/question';
 
-const PollSchema = new CustomSchema(
+const PollSchema = new Schema<IPollDocument>(
 	{
     title: {
       type: String,
@@ -19,7 +19,7 @@ const PollSchema = new CustomSchema(
       unique: true,
     },
     questions:  [{
-      type: CustomSchema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Question',
     }]
 	}, {
@@ -28,5 +28,9 @@ const PollSchema = new CustomSchema(
   }
 );
 
-const PollModel = mongoose.model<PollModel>('Poll', PollSchema);
+PollSchema.statics.addQuestions = async function(this: Model<IPollDocument>, id: string, questions: QuestionModel[]) {
+  return this.findByIdAndUpdate(Types.ObjectId(id), { $addToSet: { questions }}, { new: true }).populate(questions).exec();
+}
+
+const PollModel = mongoose.model<IPollDocument, IPollModel>('Poll', PollSchema);
 export default PollModel;

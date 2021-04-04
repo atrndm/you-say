@@ -1,9 +1,11 @@
 /**
  * DAL for the Question Entity
  */
+import mongoose from 'mongoose';
 import Question, { QuestionModel } from 'models/question';
 import { DatabaseError } from 'services/error-handler';
 import { createAnswers } from 'services/answer-service';
+import pollService from 'services/poll-service';
 import { QuestionFindQuery } from './question-service.types';
 
 export const createQuestion = async (payload:QuestionModel) => {
@@ -11,14 +13,16 @@ export const createQuestion = async (payload:QuestionModel) => {
 
   try {
     const question = await Question.create({ title, poll });
+    await pollService.addQuestions(poll, [ question.id ]);
+    return question.toJSON();
 
-    if (answers) {
-      const answersPayload = answers.map(answer => ({...answer, question: question._id}));
-      const answersRes = await createAnswers(answersPayload);
-      question.answers = answersRes;
-      question.populate('answers');
-      await question.save();
-    }
+    // if (answers) {
+    //   const answersPayload = answers.map(answer => ({...answer, question: question._id}));
+    //   const answersRes = await createAnswers(answersPayload);
+    //   question.answers = answersRes;
+    //   question.populate('answers');
+    //   await question.save();
+    // }
 
     return await Question.create(payload);
   } catch (error) {
