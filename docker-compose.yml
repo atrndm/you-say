@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  # mongodb:
+  #   image : mongo
+  #   container_name: mongodb
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=apiuser
+  #     - MONGO_INITDB_ROOT_PASSWORD=123
+  #   # volumes:
+  #   #   - ./mongodb/database:/data/db
+  #   command: mongod --auth
+  #   ports:
+  #     - 27017:27017
+  
+  server:
+    image: you-say-server
+    build:
+      context: ./server
+    command: npm run dev
+    volumes:
+      - ./server:/app
+    ports:
+      - 8080:8080
