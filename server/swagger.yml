@@ -23,6 +23,23 @@ paths:
                 $ref: "#/components/schemas/Poll"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
+  /polls/search:
+    post:
+      summary: find Polls by criteria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Poll"
+      responses:
+        200:
+          description: Search was successfull. The result might be an empty array.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Polls"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
   /polls/{slug}:
     get:
       summary: Get a single poll by slug
@@ -44,15 +61,17 @@ paths:
           $ref: "#/components/responses/ResponseNotFound"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
+  /polls/{pollId}:    
     post:
-      summary: update a single poll by slug
+      summary: update a single poll by id
       parameters:
-        - name: slug
+        - name: pollId
           in: path
-          description: Poll's url path
+          description: Poll's id
           required: true
           schema:
             type: string
+          example: 606579a45e3da6769f563298
       requestBody:
         content:
           application/json:
@@ -60,13 +79,28 @@ paths:
               $ref: "#/components/schemas/Poll"
       responses:
         200:
-          description: Poll successfully updated.
+          description: Poll updated successfully.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Poll"
         404:
           $ref: "#/components/responses/ResponseNotFound"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+    delete:
+      summary:  delete a single poll by id
+      parameters:
+        - name: pollId
+          in: path
+          description: Poll's id
+          required: true
+          schema:
+            type: string
+          example: 606579a45e3da6769f563298
+      responses:
+        200:
+          description: Poll no longer exists.
         500:
           $ref: "#/components/responses/ResponseUnknownError"
 components:
@@ -87,15 +121,10 @@ components:
         title: The poll's title
         status: active
         slug: the-poll-url
-        questions:
-          - title: First Question
-            answers:
-              - title: First Answer
-              - title: Second Answer
-          - title: Second Question
-            answers:
-              - title: First Answer
-              - title: Second Answer
+    Polls:
+      type: array
+      items:
+        $ref: '#/components/schemas/Poll'
     Question:
       type: object
       properties:
@@ -105,9 +134,6 @@ components:
           $ref: '#/components/schemas/Answer'
       example:
         title: Question number 1
-        answers:
-          - title: First Answer
-          - title: Second Answer
     Questions:
       type: array
       items:

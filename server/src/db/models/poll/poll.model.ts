@@ -1,7 +1,8 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
+import CustomSchema from '../../custom-schema';
 import { PollStatus, PollModel } from './poll.types';
 
-const PollSchema = new Schema(
+const PollSchema = new CustomSchema(
 	{
     title: {
       type: String,
@@ -18,7 +19,7 @@ const PollSchema = new Schema(
       unique: true,
     },
     questions:  [{
-      type: Schema.Types.ObjectId,
+      type: CustomSchema.Types.ObjectId,
       ref: 'Question',
     }]
 	}, {

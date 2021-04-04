@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 import { connectionString } from './config';
 import logger from 'services/logger';
 import { isProduction } from 'src/config';
