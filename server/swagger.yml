@@ -9,6 +9,8 @@ paths:
   /polls:
     post:
       summary: Create a new poll
+      tags:
+        - Polls
       requestBody:
         content:
           application/json:
@@ -26,6 +28,8 @@ paths:
   /polls/search:
     post:
       summary: find Polls by criteria
+      tags:
+        - Polls
       requestBody:
         content:
           application/json:
@@ -43,6 +47,8 @@ paths:
   /polls/{slug}:
     get:
       summary: Get a single poll by slug
+      tags:
+        - Polls
       parameters:
         - name: slug
           in: path
@@ -64,6 +70,8 @@ paths:
   /polls/{pollId}:    
     post:
       summary: update a single poll by id
+      tags:
+        - Polls
       parameters:
         - name: pollId
           in: path
@@ -90,6 +98,8 @@ paths:
           $ref: "#/components/responses/ResponseUnknownError"
     delete:
       summary:  delete a single poll by id
+      tags:
+        - Polls
       parameters:
         - name: pollId
           in: path
@@ -101,6 +111,93 @@ paths:
       responses:
         200:
           description: Poll no longer exists.
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+  /questions:
+    get:
+      summary: Get a single question by id
+      tags:
+        - Questions
+      parameters:
+        - name: questionId
+          in: path
+          description: Question's id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Question successfully fetched.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+        404:
+          $ref: "#/components/responses/ResponseNotFound"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+    post:
+      summary: Create a new question
+      tags:
+        - Questions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+      responses:
+        201:
+          description: New question created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Poll"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+  /questions/{questionId}:
+    post:
+      summary: update a single question by id
+      tags:
+        - Questions
+      parameters:
+        - name: questionId
+          in: path
+          description: Questions's id
+          required: true
+          schema:
+            type: string
+          example: 606579a45e3da6769f563298
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+      responses:
+        200:
+          description: Question updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+        404:
+          $ref: "#/components/responses/ResponseNotFound"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+    delete:
+      summary:  delete a single question by id
+      tags:
+        - Questions
+      parameters:
+        - name: questionId
+          in: path
+          description: Question's id
+          required: true
+          schema:
+            type: string
+          example: 606579a45e3da6769f563298
+      responses:
+        200:
+          description: Question no longer exists.
         500:
           $ref: "#/components/responses/ResponseUnknownError"
 components:
@@ -169,3 +266,7 @@ components:
             $ref: "#/components/schemas/ResponseGeneralError"
             example:
               msg: Something went wrong.
+tags:
+  - name: Polls
+  - name: Questions
+  - name: Answers
