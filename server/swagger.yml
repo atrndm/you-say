@@ -56,6 +56,7 @@ paths:
           required: true
           schema:
             type: string
+          example: the-poll-url
       responses:
         200:
           description: Poll successfully fetched.
@@ -111,6 +112,8 @@ paths:
       responses:
         200:
           description: Poll no longer exists.
+          schema:
+            $ref: "#/components/schemas/DeleteResponse"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
   /questions:
@@ -129,7 +132,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Poll"
+                $ref: "#/components/schemas/Question"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
   /questions/{questionId}:
@@ -144,6 +147,7 @@ paths:
           required: true
           schema:
             type: string
+          example: 606579a45e3da6769f563298
       responses:
         200:
           description: Question successfully fetched.
@@ -198,6 +202,98 @@ paths:
       responses:
         200:
           description: Question no longer exists.
+          schema:
+            $ref: "#/components/schemas/DeleteResponse"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+  /answers:
+    post:
+      summary: Create a new question
+      tags:
+        - Answers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Answer"
+      responses:
+        201:
+          description: New answer created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Answer"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+  /answers/{answerId}:
+    get:
+      summary: Get a single question by id
+      tags:
+        - Answers
+      parameters:
+        - name: answerId
+          in: path
+          description: Answers's id
+          required: true
+          schema:
+            type: string
+          example: 606579a45e3da6769f563298
+      responses:
+        200:
+          description: Question successfully fetched.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+        404:
+          $ref: "#/components/responses/ResponseNotFound"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+    post:
+      summary: Update a single question by id
+      tags:
+        - Answers
+      parameters:
+        - name: answerId
+          in: path
+          description: Answer's id
+          required: true
+          schema:
+            type: string
+          example: 606579a45e3da6769f563298
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Answer"
+      responses:
+        200:
+          description: Answer updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Answer"
+        404:
+          $ref: "#/components/responses/ResponseNotFound"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+    delete:
+      summary:  Delete a single answer by id
+      tags:
+        - Answers
+      parameters:
+        - name: answerId
+          in: path
+          description: Answer's id
+          required: true
+          schema:
+            type: string
+          example: 606579a45e3da6769f563298
+      responses:
+        200:
+          description: Answer no longer exists.
+          schema:
+            $ref: "#/components/schemas/DeleteResponse"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
 components:
@@ -245,15 +341,12 @@ components:
           type: string
         title:
           type: string
-        poll:
+        question:
           type: string
-        answers:
-          type: array
       example:
         title: Answer number 1
         id: 606a1a23c42d89437ee1c96d
-        poll: 606ae729b694b182ca2aaf88
-        answers: []
+        question: 606ae729b694b182ca2aaf88
     Answers:
       type: array
       items:
@@ -264,6 +357,12 @@ components:
         msg:
           type: string
   responses:
+    DeleteResponse:
+      description: Resource deleted.
+      content:
+        application/json:
+          schema:
+            rowsAffected: number
     ResponseNotFound:
       description: Resource not found.
       content:

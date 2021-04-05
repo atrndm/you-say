@@ -5,7 +5,7 @@ import Question, { IQuestion, IQuestionDocument } from 'models/question';
 import { DatabaseError } from 'services/error-handler';
 import transformFilter from 'src/db/helpers/transform-filter';
 import pollService from 'services/poll-service';
-import { QuestionFindQuery } from './question-service.types';
+import { IQuestionFindQuery } from './question-service.types';
 
 export const findQuestionById = async (id:string) => {
   try {
@@ -37,7 +37,7 @@ export const createQuestions = async (payload:IQuestion[]) => {
   }
 }
 
-export const updateQuestion = async (filter:QuestionFindQuery, payload:IQuestionDocument) => {
+export const updateQuestion = async (filter:IQuestionFindQuery, payload:IQuestionDocument) => {
   try {
     return await Question.findOneAndUpdate(transformFilter(filter), payload, {
       new: true
@@ -55,6 +55,6 @@ export const deleteQuestion = async (id:string) => {
       rowsAffected: deletedCount
     }
   } catch (error) {
-    throw new DatabaseError(error, 'Error deleting Question' , { filter });
+    throw new DatabaseError(error, 'Error deleting question' , { filter });
   }
 }

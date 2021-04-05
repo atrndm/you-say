@@ -11,6 +11,7 @@ import swaggerUIMiddleware from 'middleware/swagger-ui';
 import { connectToDatabase } from 'src/db/connect-db';
 import { pollsRouter } from 'api/poll';
 import { questionsRouter } from 'api/questions';
+import { answersRouter } from 'api/answers';
 
 connectToDatabase();
 
@@ -24,6 +25,8 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('/polls', pollsRouter);
 app.use('/questions', questionsRouter);
+app.use('/answers', answersRouter);
+
 app.use('/api-docs', ...swaggerUIMiddleware());
 app.use(errorHandlerMiddleware);
 
