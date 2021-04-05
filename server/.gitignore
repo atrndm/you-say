@@ -9,3 +9,5 @@
 .env.*
 logs/
 npm-debug.log*
+
+docs/

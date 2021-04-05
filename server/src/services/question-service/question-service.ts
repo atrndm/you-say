@@ -3,28 +3,27 @@
  */
 import Question, { IQuestion, IQuestionDocument } from 'models/question';
 import { DatabaseError } from 'services/error-handler';
+import transformFilter from 'src/db/helpers/transform-filter';
 import pollService from 'services/poll-service';
 import { QuestionFindQuery } from './question-service.types';
 
+export const findQuestionById = async (id:string) => {
+  try {
+    return await Question.findOne({ _id: id }).populate('answers');
+  } catch (error) {
+    throw new DatabaseError(error, `Error fetching question ${id}` , { filter: { id }});
+  }
+}
+
 export const createQuestion = async (payload:IQuestion) => {
-  const { poll, title, answers } = payload;
+  const { poll, title } = payload;
 
   try {
     const question = await Question.create({ title, poll });
-    await pollService.addQuestions(poll, [ question.id ]);
+    await pollService.addQuestionsToPoll(poll, [ question.id ]);
     return question.toJSON();
-
-    // if (answers) {
-    //   const answersPayload = answers.map(answer => ({...answer, question: question._id}));
-    //   const answersRes = await createAnswers(answersPayload);
-    //   question.answers = answersRes;
-    //   question.populate('answers');
-    //   await question.save();
-    // }
-
-    return await Question.create(payload);
   } catch (error) {
-    throw new DatabaseError(error, 'Error creating poll');
+    throw new DatabaseError(error, 'Error creating question');
   }
 }
 
@@ -34,13 +33,13 @@ export const createQuestions = async (payload:IQuestion[]) => {
     const resolvedPromises = await Promise.all(promises);
     return resolvedPromises;
   } catch (error) {
-    throw new DatabaseError(error, 'Error creating poll');
+    throw new DatabaseError(error, 'Error creating question');
   }
 }
 
 export const updateQuestion = async (filter:QuestionFindQuery, payload:IQuestionDocument) => {
   try {
-    return await Question.findOneAndUpdate(filter, payload, {
+    return await Question.findOneAndUpdate(transformFilter(filter), payload, {
       new: true
     });
   } catch (error) {
@@ -48,10 +47,14 @@ export const updateQuestion = async (filter:QuestionFindQuery, payload:IQuestion
   }
 }
 
-export const findQuestionById = async (id:string) => {
+export const deleteQuestion = async (id:string) => {
+  const filter = { id };
   try {
-    return await Question.findOne({ _id: id }).populate('answers');
+    const { deletedCount } = await Question.deleteOne(transformFilter(filter));
+    return {
+      rowsAffected: deletedCount
+    }
   } catch (error) {
-    throw new DatabaseError(error, `Error fetching question ${id}` , { filter: { id }});
+    throw new DatabaseError(error, 'Error deleting Question' , { filter });
   }
 }

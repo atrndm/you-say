@@ -67,11 +67,11 @@ export const deletePoll = async (id:string) => {
   }
 }
 
-export const addQuestions = async (id:string, questions:IQuestionDocument['_id'][]) => {
+export const addQuestionsToPoll = async (pollId:string, questions:IQuestionDocument['_id'][]) => {
   try {
-    const poll = await Poll.addQuestions(id, questions);
+    const poll = await Poll.addQuestions(pollId, questions);
     return poll.toJSON();
   } catch (error) {
-    throw new DatabaseError(error, 'Error adding questions to a poll' , { pollId: id, questions });
+    throw new DatabaseError(error, 'Error adding questions to a poll' , { pollId, questions });
   }
 }

@@ -10,6 +10,7 @@ import { errorHandlerMiddleware } from 'services/error-handler';
 import swaggerUIMiddleware from 'middleware/swagger-ui';
 import { connectToDatabase } from 'src/db/connect-db';
 import { pollsRouter } from 'api/poll';
+import { questionsRouter } from 'api/questions';
 
 connectToDatabase();
 
@@ -22,6 +23,7 @@ app.use(requestLoggerMiddleware);
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('/polls', pollsRouter);
+app.use('/questions', questionsRouter);
 app.use('/api-docs', ...swaggerUIMiddleware());
 app.use(errorHandlerMiddleware);
 

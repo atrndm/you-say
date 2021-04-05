@@ -27,7 +27,7 @@ paths:
           $ref: "#/components/responses/ResponseUnknownError"
   /polls/search:
     post:
-      summary: find Polls by criteria
+      summary: Find Polls by criteria
       tags:
         - Polls
       requestBody:
@@ -69,7 +69,7 @@ paths:
           $ref: "#/components/responses/ResponseUnknownError"
   /polls/{pollId}:    
     post:
-      summary: update a single poll by id
+      summary: Update a single poll by id
       tags:
         - Polls
       parameters:
@@ -97,7 +97,7 @@ paths:
         500:
           $ref: "#/components/responses/ResponseUnknownError"
     delete:
-      summary:  delete a single poll by id
+      summary:  Delete a single poll by id
       tags:
         - Polls
       parameters:
@@ -114,6 +114,25 @@ paths:
         500:
           $ref: "#/components/responses/ResponseUnknownError"
   /questions:
+    post:
+      summary: Create a new question
+      tags:
+        - Questions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+      responses:
+        201:
+          description: New question created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Poll"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+  /questions/{questionId}:
     get:
       summary: Get a single question by id
       tags:
@@ -137,26 +156,7 @@ paths:
         500:
           $ref: "#/components/responses/ResponseUnknownError"
     post:
-      summary: Create a new question
-      tags:
-        - Questions
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Question"
-      responses:
-        201:
-          description: New question created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Poll"
-        500:
-          $ref: "#/components/responses/ResponseUnknownError"
-  /questions/{questionId}:
-    post:
-      summary: update a single question by id
+      summary: Update a single question by id
       tags:
         - Questions
       parameters:
@@ -184,7 +184,7 @@ paths:
         500:
           $ref: "#/components/responses/ResponseUnknownError"
     delete:
-      summary:  delete a single question by id
+      summary:  Delete a single question by id
       tags:
         - Questions
       parameters:
@@ -227,10 +227,13 @@ components:
       properties:
         title:
           type: string
+        poll:
+          type: string
         answers:
           $ref: '#/components/schemas/Answer'
       example:
         title: Question number 1
+        poll: 606a1a23c42d89437ee1c96d
     Questions:
       type: array
       items:
@@ -238,10 +241,19 @@ components:
     Answer:
       type: object
       properties:
+        id:
+          type: string
         title:
           type: string
+        poll:
+          type: string
+        answers:
+          type: array
       example:
         title: Answer number 1
+        id: 606a1a23c42d89437ee1c96d
+        poll: 606ae729b694b182ca2aaf88
+        answers: []
     Answers:
       type: array
       items:
