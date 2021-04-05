@@ -1,10 +1,4 @@
-interface PollFindQueryBase {
+import { FindQueryFilter } from 'src/db/types';
+export interface PollFindQuery extends FindQueryFilter {
   slug?: string,
-}
-export interface PollFindQueryDB extends PollFindQueryBase {
-  _id?: string,
-}
-
-export interface PollFindQuery extends PollFindQueryBase {
-  id?: string,
 }

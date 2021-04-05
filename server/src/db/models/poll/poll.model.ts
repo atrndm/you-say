@@ -1,6 +1,6 @@
 import mongoose, { Schema, Types, Model } from 'mongoose';
 import { PollStatus, IPollModel, IPollDocument } from './poll.types';
-import { QuestionModel } from 'models/question';
+import { IQuestionDocument } from 'models/question';
 
 const PollSchema = new Schema<IPollDocument>(
 	{
@@ -28,7 +28,7 @@ const PollSchema = new Schema<IPollDocument>(
   }
 );
 
-PollSchema.statics.addQuestions = async function(this: Model<IPollDocument>, id: string, questions: QuestionModel[]) {
+PollSchema.statics.addQuestions = async function(this: Model<IPollDocument>, id: string, questions: IQuestionDocument[]) {
   return this.findByIdAndUpdate(Types.ObjectId(id), { $addToSet: { questions }}, { new: true }).populate(questions).exec();
 }
 

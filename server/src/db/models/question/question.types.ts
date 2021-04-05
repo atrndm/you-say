@@ -1,14 +1,27 @@
-import { Document } from 'mongoose';
-import { IPollDocument } from '../poll';
-import { AnswerModel } from '../answer';
+import { Document, Model } from 'mongoose';
+import { IPollDocument } from 'models/poll';
+import { IAnswerDocument } from 'models/answer';
 
 export interface IQuestion {
   title: string,
-  poll: IPollDocument['_id'] | string,
-  answers: AnswerModel['_id'][],
+  poll: IPollDocument['_id'] | IPollDocument,
+  answers: IAnswerDocument['_id'][] | IAnswerDocument,
 }
-export interface QuestionModel extends Document {
-  title: string,
-  poll: IPollDocument['_id'] | string,
-  answers: AnswerModel['_id'][],
+
+interface IQuestionBaseDocument extends IQuestion, Document {
+  addAnswers(answers:IAnswerDocument[]): IQuestionModel,
+}
+
+export interface IQuestionDocument extends IQuestionBaseDocument {
+  question: IQuestionDocument['_id'],
+  answers: IAnswerDocument['_id'][],
+}
+
+export interface IQuestionPopulatedDocument extends IQuestionBaseDocument {
+  question: IQuestionDocument,
+  answers: IAnswerDocument[],
+}
+
+export interface IQuestionModel extends Model<IQuestionDocument> {
+  addAnswers(id: string, answers: string[]): Promise<IQuestionDocument>
 }

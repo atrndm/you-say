@@ -1,10 +1,10 @@
 /**
  * DAL for the Anwer Entity
  */
- import Answer, { AnswerModel } from 'models/answer';
+ import Answer, { IAnswerDocument } from 'models/answer';
  import { DatabaseError } from 'services/error-handler';
 
- export const createAnswer = async (payload:AnswerModel) => {
+ export const createAnswer = async (payload:IAnswerDocument) => {
   try {
     return await Answer.create(payload);
   } catch (error) {
@@ -12,7 +12,7 @@
   }
 }
 
-export const createAnswers = async (payload:AnswerModel[]) => {
+export const createAnswers = async (payload:IAnswerDocument[]) => {
   try {
     return await Answer.insertMany(payload);
   } catch (error) {

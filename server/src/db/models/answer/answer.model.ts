@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
-import { AnswerModel } from './answer.types';
+import { IAnswerDocument, IAnswerModel } from './answer.types';
 
-const AnswerSchema = new Schema(
+const AnswerSchema = new Schema<IAnswerDocument>(
 	{
     title: {
       type: String,
@@ -17,5 +17,5 @@ const AnswerSchema = new Schema(
   }
 );
 
-const AnswerModel = mongoose.model<AnswerModel>('Answer', AnswerSchema);
+const AnswerModel = mongoose.model<IAnswerDocument, IAnswerModel>('Answer', AnswerSchema);
 export default AnswerModel;

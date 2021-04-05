@@ -1,14 +1,12 @@
 /**
  * DAL for the Question Entity
  */
-import mongoose from 'mongoose';
-import Question, { QuestionModel } from 'models/question';
+import Question, { IQuestion, IQuestionDocument } from 'models/question';
 import { DatabaseError } from 'services/error-handler';
-import { createAnswers } from 'services/answer-service';
 import pollService from 'services/poll-service';
 import { QuestionFindQuery } from './question-service.types';
 
-export const createQuestion = async (payload:QuestionModel) => {
+export const createQuestion = async (payload:IQuestion) => {
   const { poll, title, answers } = payload;
 
   try {
@@ -30,7 +28,7 @@ export const createQuestion = async (payload:QuestionModel) => {
   }
 }
 
-export const createQuestions = async (payload:QuestionModel[]) => {
+export const createQuestions = async (payload:IQuestion[]) => {
   try {
     const promises = payload.map(createQuestion);
     const resolvedPromises = await Promise.all(promises);
@@ -40,7 +38,7 @@ export const createQuestions = async (payload:QuestionModel[]) => {
   }
 }
 
-export const updateQuestion = async (filter:QuestionFindQuery, payload:QuestionModel) => {
+export const updateQuestion = async (filter:QuestionFindQuery, payload:IQuestionDocument) => {
   try {
     return await Question.findOneAndUpdate(filter, payload, {
       new: true

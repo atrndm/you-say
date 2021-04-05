@@ -3,23 +3,9 @@
  */
 import Poll, { IPollDocument } from 'models/poll';
 import { DatabaseError } from 'services/error-handler';
-import { QuestionModel } from 'src/db/models/question';
-import { PollFindQueryDB, PollFindQuery } from './poll-service.types';
-
-const transformFilter = (filter:PollFindQuery):PollFindQueryDB => {
-  const dupFilter:PollFindQuery = { ...filter };
-  const dbFilter:PollFindQueryDB = {};
-
-  if (dupFilter.id) {
-    dbFilter._id = dupFilter.id;
-    delete dupFilter.id;
-  }
-
-  return {
-    ...dupFilter,
-    ...dbFilter,
-  };
-}
+import { IQuestionDocument } from 'models/question';
+import { PollFindQuery } from './poll-service.types';
+import transformFilter from 'src/db/helpers/transform-filter';
 
 export const findPolls = async (filter:PollFindQuery) => {
   try {
@@ -37,9 +23,9 @@ export const findPolls = async (filter:PollFindQuery) => {
 export const findPoll = async (filter:PollFindQuery) => {
   try {
     const poll = await Poll
-                          .findOne(transformFilter(filter))
-                          .populate('questions')
-                          .populate('questions.answers');
+                        .findOne(transformFilter(filter))
+                        .populate('questions')
+                        .populate('questions.answers');
     return poll;
   } catch (error) {
     throw new DatabaseError(error, 'Error fetching poll' , { filter });
@@ -81,7 +67,7 @@ export const deletePoll = async (id:string) => {
   }
 }
 
-export const addQuestions = async (id:string, questions:QuestionModel['_id'][]) => {
+export const addQuestions = async (id:string, questions:IQuestionDocument['_id'][]) => {
   try {
     const poll = await Poll.addQuestions(id, questions);
     return poll.toJSON();
