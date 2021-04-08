@@ -1,6 +1,7 @@
 /* tslint:disable:max-classes-per-file */
 
 import { VError } from 'verror';
+
 export interface CustomError {
   name: string,
   statusCode: number,
@@ -8,15 +9,40 @@ export interface CustomError {
   data?: any,
 }
 
+export class RuntimeError extends VError implements CustomError {
+  get statusCode() {
+    return 500;
+  }
+}
+export class BaseError extends VError implements CustomError {
+  get statusCode() {
+    return 500;
+  }
+}
 
-export class DatabaseError extends VError {
+
+export class DatabaseError extends BaseError {
 
   get statusCode() {
     return 500;
   }
 }
 
-export class ErrorNotFound extends VError {
+export class ErrorUnknown extends BaseError {
+  get statusCode() {
+    return 500;
+  }
+}
+
+export class ErrorUnauthorized extends BaseError {
+  message = 'User unauthorized111';
+
+  get statusCode() {
+    return 401;
+  }
+}
+
+export class ErrorNotFound extends BaseError {
   get statusCode() {
     return 404;
   }

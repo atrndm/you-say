@@ -6,6 +6,63 @@ info:
 servers:
   - url: http://localhost:8080/
 paths:
+  /register:
+    post:
+      summary: Register a new user
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              email: string
+              firstName: string
+              lasgtName: string
+            example:
+              email: myemail@gmail.com
+              firstName: John
+              lasgtName: Doe
+      responses:
+        200:
+          description: Registration was successful.
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+  /login:
+    post:
+      summary: Login without password
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              email: string
+            example:
+              email: myemail@gmail.com
+      responses:
+        200:
+          description: Login flow initiated.
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
+  /authenticate:
+    post:
+      summary: Authorize a login token
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              token: string
+            example:
+              token: 7bc9945560c79321303d7b6b2dff4326
+      responses:
+        200:
+          description: Registration was successful.
+        401:
+          $ref: "#/components/responses/ResponseUnauthorized"
+        500:
+          $ref: "#/components/responses/ResponseUnknownError"
   /polls:
     post:
       summary: Create a new poll
@@ -377,7 +434,16 @@ components:
             $ref: "#/components/schemas/ResponseGeneralError"
             example:
               msg: Something went wrong.
+    ResponseUnauthorized:
+      description: User is unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ResponseGeneralError"
+            example:
+              msg: User is unauthorized.
 tags:
+  - name: Auth
   - name: Polls
   - name: Questions
   - name: Answers

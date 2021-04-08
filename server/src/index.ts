@@ -9,6 +9,7 @@ import logger, { requestLoggerMiddleware } from 'services/logger';
 import { errorHandlerMiddleware } from 'services/error-handler';
 import swaggerUIMiddleware from 'middleware/swagger-ui';
 import { connectToDatabase } from 'src/db/connect-db';
+import { authRouter } from 'api/auth';
 import { pollsRouter } from 'api/poll';
 import { questionsRouter } from 'api/questions';
 import { answersRouter } from 'api/answers';
@@ -23,6 +24,7 @@ app.use(requestLoggerMiddleware);
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+app.use('/', authRouter);
 app.use('/polls', pollsRouter);
 app.use('/questions', questionsRouter);
 app.use('/answers', answersRouter);

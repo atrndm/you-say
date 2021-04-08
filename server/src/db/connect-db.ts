@@ -23,6 +23,7 @@ export const connectToDatabase = () => {
   require('./models/poll');
   require('./models/question');
   require('./models/answer');
+  require('./models/user');
 
   mongoose.connect(connectionString, {
     // for more details, see https://mongoosejs.com/docs/deprecations.html
