@@ -1,12 +1,30 @@
+import nodemailer from 'nodemailer';
+import { smtpUsername, smtppassword, smtpHost } from 'src/config';
 
-export const sendEmail = ({
+export const sendEmail = async ({
   email,
-  title,
-  message,
+  subject,
+  messageText,
 }: {
   email: string,
-  title: string,
-  message: string,
+  subject: string,
+  messageText: string,
 }) => {
-const test = true;
+  const options = {
+    host: smtpHost,
+    port: 465,
+    secure: true,
+    auth: {
+      user: smtpUsername,
+      pass: smtppassword,
+    },
+  };
+  const transporter = nodemailer.createTransport(options);
+
+  const info = await transporter.sendMail({
+    from: `"Fred Foo 👻" <${smtpUsername}>`,
+    to: email,
+    subject,
+    text: messageText,
+  });
 }

@@ -5,7 +5,7 @@ export const sendLoginLinkEmail = ({ email, token }: { email:string, token:strin
   console.log(11111, email, token);
   return sendEmail({
     email,
-    title: 'Your Login Link',
-    message: `Go to http://localhost:8080/authenticate?token=${token}`,
+    subject: 'Your Login Link',
+    messageText: `Go to http://localhost:8080/authenticate?token=${token}`,
   });
 }
