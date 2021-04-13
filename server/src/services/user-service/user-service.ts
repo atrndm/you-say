@@ -2,14 +2,14 @@
  * DAL for the User Entity
  */
 import User, { IUser } from 'models/user';
-import { DatabaseError } from 'services/error-handler';
+import { DatabaseError, ErrorNotFound } from 'services/error-handler';
 import transformFilter from 'src/db/helpers/transform-filter';
 import { IUserFindQuery, IServiceUser } from './user-service.types';
 
 export const findUser = async (filter:IUserFindQuery):Promise<IServiceUser> => {
   try {
     const user = await User.findOne(transformFilter(filter));
-    return user.toJSON();
+    return user?.toJSON();
   } catch (error) {
     throw new DatabaseError(error, 'Error fetching user' , { filter });
   }

@@ -6,6 +6,7 @@ import { DatabaseError } from 'services/error-handler';
 import transformFilter from 'src/db/helpers/transform-filter';
 import pollService from 'services/poll-service';
 import { IQuestionFindQuery } from './question-service.types';
+import { IAnswerDocument } from 'src/db/models/answer';
 
 export const findQuestionById = async (id:string) => {
   try {
@@ -22,16 +23,6 @@ export const createQuestion = async (payload:IQuestion) => {
     const question = await Question.create({ title, poll });
     await pollService.addQuestionsToPoll(poll, [ question.id ]);
     return question.toJSON();
-  } catch (error) {
-    throw new DatabaseError(error, 'Error creating question');
-  }
-}
-
-export const createQuestions = async (payload:IQuestion[]) => {
-  try {
-    const promises = payload.map(createQuestion);
-    const resolvedPromises = await Promise.all(promises);
-    return resolvedPromises;
   } catch (error) {
     throw new DatabaseError(error, 'Error creating question');
   }
@@ -56,5 +47,14 @@ export const deleteQuestion = async (id:string) => {
     }
   } catch (error) {
     throw new DatabaseError(error, 'Error deleting question' , { filter });
+  }
+}
+
+export const addAnswersToQuestion = async (questionId:string, answers:IAnswerDocument['_id'][]) => {
+  try {
+    const question = await Question.addAnswers(questionId, answers);
+    return question.toJSON();
+  } catch (error) {
+    throw new DatabaseError(error, 'Error adding questions to a poll' , { questionId, answers });
   }
 }

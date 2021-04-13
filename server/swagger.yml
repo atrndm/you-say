@@ -55,7 +55,7 @@ paths:
             schema:
               token: string
             example:
-              token: 7bc9945560c79321303d7b6b2dff4326
+              token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MDZkYjI5ZTNkNTU2YTExYWRmOTgzYzYiLCJleHAiOjE2MTgyNTU1NzMsImlhdCI6MTYxODI1NDk3M30.8ViPL8kSmzvJJNgspbXcZiAZLnkKkkCBarms0JNeDWw
       responses:
         200:
           description: Registration was successful.
@@ -354,6 +354,11 @@ paths:
         500:
           $ref: "#/components/responses/ResponseUnknownError"
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Poll:
       type: object
@@ -447,3 +452,5 @@ tags:
   - name: Polls
   - name: Questions
   - name: Answers
+security:
+  - bearerAuth: []

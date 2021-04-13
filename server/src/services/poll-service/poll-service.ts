@@ -9,11 +9,7 @@ import transformFilter from 'src/db/helpers/transform-filter';
 
 export const findPolls = async (filter:PollFindQuery) => {
   try {
-    const polls = await Poll
-                          .find(transformFilter(filter))
-                          .populate('questions')
-                          .populate('questions.answers')
-                          .exec();
+    const polls = await Poll.find(transformFilter(filter));
     return polls.map(poll => poll.toJSON());
   } catch (error) {
     throw new DatabaseError(error, 'Error fetching poll' , { filter });
@@ -24,8 +20,12 @@ export const findPoll = async (filter:PollFindQuery) => {
   try {
     const poll = await Poll
                         .findOne(transformFilter(filter))
-                        .populate('questions')
-                        .populate('questions.answers');
+                        .populate({
+                          path: 'questions',
+                          select: ['id', 'title', 'answers'],
+                          populate: { path: 'answers', select: ['id', 'title'] }
+                        })
+                        .populate({ path: 'createdBy', select: ['firstName', 'lastName', 'email'] });
     return poll;
   } catch (error) {
     throw new DatabaseError(error, 'Error fetching poll' , { filter });
@@ -33,11 +33,11 @@ export const findPoll = async (filter:PollFindQuery) => {
 }
 
 export const createPoll = async (payload:IPollDocument) => {
-  const { title, status, slug } = payload;
+  const { title, status, slug, createdBy } = payload;
   delete payload.questions;
 
   try {
-    const poll = await Poll.create({ title, status, slug });
+    const poll = await Poll.create({ title, status, slug, createdBy });
     return poll.toJSON();
   } catch (error) {
     throw new DatabaseError(error, 'Error creating poll');

@@ -1,5 +1,6 @@
 import { Document, Model, Types } from "mongoose"
 import { IQuestion, IQuestionDocument } from 'models/question';
+import { IUserDocument } from 'models/user';
 
 export enum PollStatus {
   draft,
@@ -12,6 +13,7 @@ export interface IPoll {
   status: PollStatus,
   slug: string,
   questions: Types.ObjectId[] | IQuestionDocument[],
+  createdBy:  Types.ObjectId[] | IUserDocument[],
 }
 
 interface IPollBaseDocument extends IPoll, Document {

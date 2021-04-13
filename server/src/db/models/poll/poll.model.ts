@@ -18,6 +18,10 @@ const PollSchema = new Schema<IPollDocument>(
       required: true,
       unique: true,
     },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
     questions:  [{
       type: Schema.Types.ObjectId,
       ref: 'Question',

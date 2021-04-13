@@ -24,7 +24,7 @@ const QuestionSchema = new Schema<IQuestionDocument>(
 );
 
 QuestionSchema.statics.addAnswers = async function(this: Model<IQuestionDocument>, id: string, answers: IAnswerDocument[]) {
-  return this.findByIdAndUpdate(mongoose.Types.ObjectId(id), { $addToSet: { answers }}, { new: true }).populate('answers').exec();
+  return this.findByIdAndUpdate(mongoose.Types.ObjectId(id), { $addToSet: { answers }}, { new: true });
 }
 
 const QuestionModel = mongoose.model<IQuestionDocument, IQuestionModel>('Question', QuestionSchema);

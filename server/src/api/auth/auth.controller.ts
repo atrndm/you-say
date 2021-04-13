@@ -3,6 +3,7 @@ import { ErrorNotFound, ErrorUnauthorized, ErrorUnknown, RuntimeError } from 'se
 import { generateJwt, verifyJwt } from 'services/token-service';
 import { sendLoginLinkEmail } from 'services/email-service';
 import { createUser, findUser } from 'services/user-service';
+import logger from 'src/services/logger';
 
 export const register = async (req:Request, res:Response, next:NextFunction) => {
   const { email, firstName, lastName } = req.body;
@@ -43,6 +44,8 @@ export const login = async (req:Request, res:Response, next:NextFunction) => {
       }
 
       sendLoginLinkEmail({ email, token });
+    } else {
+      logger.info('User not found');
     }
 
     res.send({

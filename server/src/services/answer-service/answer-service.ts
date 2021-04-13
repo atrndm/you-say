@@ -5,12 +5,13 @@ import Answer, { IAnswerDocument } from 'models/answer';
 import { DatabaseError } from 'services/error-handler';
 import transformFilter from 'src/db/helpers/transform-filter';
 import { IAnswerFindQuery } from './answer-service.types';
+import questionService from 'services/question-service';
 
 export const findAnswerById = async (id:string) => {
   const filter = { id };
   try {
     const answer = await Answer.findOne(transformFilter(filter)).populate('answers');
-    return answer.toJSON();
+    return answer?.toJSON();
   } catch (error) {
     throw new DatabaseError(error, `Error fetching answer ${id}` , { filter });
   }
@@ -18,7 +19,9 @@ export const findAnswerById = async (id:string) => {
 
 export const createAnswer = async (payload:IAnswerDocument) => {
   try {
-    const answer = await Answer.create(payload);
+    const { question, title } = payload;
+    const answer = await Answer.create({ question, title });
+    await questionService.addAnswersToQuestion(question, [answer])
     return answer.toJSON();
   } catch (error) {
     throw new DatabaseError(error, 'Error creating answer');

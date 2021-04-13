@@ -13,11 +13,13 @@ export const generateJwt = async ({
   payload?: object,
   expireIn?: number,
 }):Promise<string> => {
+
   if (!sub) {
     throw new RuntimeError('jwt requires sub to be set');
-
   }
-  const exp = Math.floor(Date.now() / 1000) + (expireIn * 60);
+
+  const exp = Math.floor(Date.now() / 1000) + (expireIn * 60 * 60);
+
   return new Promise((res, rej) => {
     jwt.sign({
       sub,

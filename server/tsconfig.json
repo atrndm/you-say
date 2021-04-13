@@ -1,24 +1,28 @@
 {
   "compilerOptions": {
-      "module": "commonjs",
-      "esModuleInterop": true,
-      "target": "es6",
-      "noImplicitAny": true,
-      "moduleResolution": "node",
-      "resolveJsonModule": true,
-      "sourceMap": true,
-      "outDir": "dist",
-      "baseUrl": ".",
-      "paths": {
-        "src/*": ["src/*"],
-        "api/*": ["src/api/*"],
-        "models/*": ["src/db/models/*"],
-        "services/*": ["src/services/*"],
-        "middleware/*": ["src/middleware/*"],
-        "*": [
-            "node_modules/*"
-        ]
-      }
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"],
+      "api/*": ["src/api/*"],
+      "models/*": ["src/db/models/*"],
+      "services/*": ["src/services/*"],
+      "middleware/*": ["src/middleware/*"],
+      "*": [
+          "node_modules/*"
+      ]
+    },
+    "typeRoots": [
+      "src/@types",
+      "./node_modules/@types",
+    ]
   },
   "include": [
       "src/**/*"

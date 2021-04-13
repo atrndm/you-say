@@ -8,6 +8,7 @@ import express from 'express';
 import logger, { requestLoggerMiddleware } from 'services/logger';
 import { errorHandlerMiddleware } from 'services/error-handler';
 import swaggerUIMiddleware from 'middleware/swagger-ui';
+import tokenAuth from 'middleware/token-auth';
 import { connectToDatabase } from 'src/db/connect-db';
 import { authRouter } from 'api/auth';
 import { pollsRouter } from 'api/poll';
@@ -24,12 +25,16 @@ app.use(requestLoggerMiddleware);
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+// Routes that do not require authorization
 app.use('/', authRouter);
+app.use('/api-docs', ...swaggerUIMiddleware());
+
+// Routes that DO require authorization
+app.use(tokenAuth);
 app.use('/polls', pollsRouter);
 app.use('/questions', questionsRouter);
 app.use('/answers', answersRouter);
 
-app.use('/api-docs', ...swaggerUIMiddleware());
 app.use(errorHandlerMiddleware);
 
 app.listen( port, () => {

@@ -4,8 +4,9 @@ import pollService from 'services/poll-service';
 
 export const findPolls = async (req:Request, res:Response, next:NextFunction) => {
   try {
+    const { userId } = req;
     const filter = req.body;
-    const polls = await pollService.findPolls(filter);
+    const polls = await pollService.findPolls({ ...filter, createdBy: userId });
     res.send(polls);
   } catch (error) {
     next(error);
@@ -14,11 +15,13 @@ export const findPolls = async (req:Request, res:Response, next:NextFunction) =>
 
 export const findPollBySlug = async (req:Request, res:Response, next:NextFunction) => {
   try {
+    const { userId } = req;
     const filter = { slug: req.params.pollSlug };
-    const poll = await pollService.findPoll(filter);
+    const poll = await pollService.findPoll({ ...filter, createdBy: userId });
     if (!poll) {
       throw new ErrorNotFound('Poll not found', filter);
     }
+
     res.send(poll);
   } catch (error) {
     next(error);
@@ -27,8 +30,8 @@ export const findPollBySlug = async (req:Request, res:Response, next:NextFunctio
 
 export const createPoll = async (req:Request, res:Response, next:NextFunction) => {
   try {
-    const { body } = req;
-    const poll = await pollService.createPoll(body);
+    const { body, userId } = req;
+    const poll = await pollService.createPoll({ ...body, createdBy: userId });
     res.status(201).send(poll);
   } catch (error) {
     next(error);
