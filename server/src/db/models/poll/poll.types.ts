@@ -3,9 +3,9 @@ import { IQuestion, IQuestionDocument } from 'models/question';
 import { IUserDocument } from 'models/user';
 
 export enum PollStatus {
-  draft,
-  active,
-  completed,
+  draft = 'draft',
+  active = 'active',
+  completed = 'completed',
 }
 
 export interface IPoll {
