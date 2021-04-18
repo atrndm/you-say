@@ -16,8 +16,8 @@ services:
     image: you-say-server
     build:
       context: ./server
-    command: npm run dev
-    volumes:
-      - ./server:/app
+    command: npm start
+    # volumes:
+    #   - ./server:/app
     ports:
       - 8080:8080

@@ -7,11 +7,11 @@ const tokenAuthentication = async (req:Request, res:Response, next:NextFunction)
   try {
     const { authorization } = req.headers;
 
-    if(!req.headers.authorization) {
+    if(!authorization) {
       throw new ErrorUnauthorized('Missing authorization header');
     }
 
-    const jwt = authorization?.split(' ')?.[1]; // authorization header format: bearer <token>
+    const jwt = authorization.split(' ')?.[1]; // authorization header format: bearer <token>
     const payload = await verifyJwt(jwt);
     req.userId = payload.sub;
     next();
