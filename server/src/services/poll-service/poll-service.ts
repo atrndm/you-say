@@ -2,7 +2,7 @@
  * DAL for the Poll Entity
  */
 import Poll, { IPollDocument } from 'models/poll';
-import { DatabaseError } from 'services/error-handler';
+import { DatabaseError } from 'services/errors';
 import { IQuestionDocument } from 'models/question';
 import { PollFindQuery } from './poll-service.types';
 import transformFilter from 'src/db/helpers/transform-filter';

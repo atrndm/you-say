@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ErrorNotFound } from 'services/error-handler';
+import { ErrorNotFound } from 'services/errors';
 import questionsService from 'services/question-service';
 
 export const findQuestionById = async (req:Request, res:Response, next:NextFunction) => {

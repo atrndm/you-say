@@ -5,8 +5,9 @@ const dotEnvPath = path.resolve(__dirname, '../', `.env.${process.env.NODE_ENV |
 dotenv.config({ path: dotEnvPath});
 
 import express from 'express';
+import helmet from 'helmet';
 import logger, { requestLoggerMiddleware } from 'services/logger';
-import { errorHandlerMiddleware } from 'services/error-handler';
+import errorHandlerMiddleware from 'middleware/error-handler';
 import swaggerUIMiddleware from 'middleware/swagger-ui';
 import tokenAuth from 'middleware/token-auth';
 import { connectToDatabase } from 'src/db/connect-db';
@@ -20,6 +21,7 @@ connectToDatabase();
 const app = express();
 const port = process.env.PORT || 8080;
 
+app.use(helmet());
 app.use(express.json());
 app.use(requestLoggerMiddleware);
 

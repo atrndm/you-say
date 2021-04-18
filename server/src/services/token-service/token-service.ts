@@ -1,7 +1,7 @@
 
 import jwt from 'jsonwebtoken';
 import { authTokenSecret } from 'src/config';
-import { ErrorUnknown, RuntimeError } from 'services/error-handler';
+import { ErrorUnknown, RuntimeError } from 'services/errors';
 import { TokenExpiredError } from './token-service.types';
 
 export const generateJwt = async ({

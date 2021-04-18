@@ -2,7 +2,7 @@
  * DAL for the Anwer Entity
  */
 import Answer, { IAnswerDocument } from 'models/answer';
-import { DatabaseError } from 'services/error-handler';
+import { DatabaseError } from 'services/errors';
 import transformFilter from 'src/db/helpers/transform-filter';
 import { IAnswerFindQuery } from './answer-service.types';
 import questionService from 'services/question-service';

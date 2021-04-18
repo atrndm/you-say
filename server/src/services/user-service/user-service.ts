@@ -1,8 +1,8 @@
 /**
  * DAL for the User Entity
  */
-import User, { IUser } from 'models/user';
-import { DatabaseError, ErrorNotFound } from 'services/error-handler';
+import User from 'models/user';
+import { DatabaseError } from 'services/errors';
 import transformFilter from 'src/db/helpers/transform-filter';
 import { IUserFindQuery, IServiceUser } from './user-service.types';
 

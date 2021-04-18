@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ErrorNotFound, ErrorUnauthorized, ErrorUnknown, RuntimeError } from 'services/error-handler';
+import { ErrorUnauthorized, ErrorUnknown } from 'services/errors';
 import { generateJwt, verifyJwt } from 'services/token-service';
 import { sendLoginLinkEmail } from 'services/email-service';
 import { createUser, findUser } from 'services/user-service';
@@ -39,6 +39,7 @@ export const login = async (req:Request, res:Response, next:NextFunction) => {
 
       try {
         token = await generateJwt({ sub: user.id });
+        logger.debug(token);
       } catch(err){
         throw new ErrorUnknown(err);
       }

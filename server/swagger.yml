@@ -80,6 +80,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Poll"
+        401:
+          $ref: "#/components/responses/ResponseUnauthorized"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
   /polls/search:
@@ -99,6 +101,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Polls"
+        401:
+          $ref: "#/components/responses/ResponseUnauthorized"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
   /polls/{slug}:
@@ -121,6 +125,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Poll"
+        401:
+          $ref: "#/components/responses/ResponseUnauthorized"
         404:
           $ref: "#/components/responses/ResponseNotFound"
         500:
@@ -150,6 +156,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Poll"
+        401:
+          $ref: "#/components/responses/ResponseUnauthorized"
         404:
           $ref: "#/components/responses/ResponseNotFound"
         500:
@@ -171,6 +179,8 @@ paths:
           description: Poll no longer exists.
           schema:
             $ref: "#/components/schemas/DeleteResponse"
+        401:
+          $ref: "#/components/responses/ResponseUnauthorized"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
   /questions:

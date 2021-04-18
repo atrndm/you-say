@@ -2,7 +2,7 @@
  * DAL for the Question Entity
  */
 import Question, { IQuestion, IQuestionDocument } from 'models/question';
-import { DatabaseError } from 'services/error-handler';
+import { DatabaseError } from 'services/errors';
 import transformFilter from 'src/db/helpers/transform-filter';
 import pollService from 'services/poll-service';
 import { IQuestionFindQuery } from './question-service.types';

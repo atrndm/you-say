@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ErrorNotFound } from 'services/error-handler';
+import { ErrorNotFound } from 'services/errors';
 import pollService from 'services/poll-service';
 
 export const findPolls = async (req:Request, res:Response, next:NextFunction) => {

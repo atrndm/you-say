@@ -14,12 +14,12 @@ export class RuntimeError extends VError implements CustomError {
     return 500;
   }
 }
+
 export class BaseError extends VError implements CustomError {
   get statusCode() {
     return 500;
   }
 }
-
 
 export class DatabaseError extends BaseError {
 
@@ -35,7 +35,6 @@ export class ErrorUnknown extends BaseError {
 }
 
 export class ErrorUnauthorized extends BaseError {
-  message = 'User unauthorized111';
 
   get statusCode() {
     return 401;
@@ -45,5 +44,11 @@ export class ErrorUnauthorized extends BaseError {
 export class ErrorNotFound extends BaseError {
   get statusCode() {
     return 404;
+  }
+}
+
+export class InputValidationError extends BaseError {
+  get statusCode() {
+    return 400;
   }
 }
