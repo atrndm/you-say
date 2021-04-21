@@ -6,6 +6,7 @@ dotenv.config({ path: dotEnvPath});
 
 import express from 'express';
 import helmet from 'helmet';
+import cors from 'cors';
 import logger, { requestLoggerMiddleware } from 'services/logger';
 import errorHandlerMiddleware from 'middleware/error-handler';
 import swaggerUIMiddleware from 'middleware/swagger-ui';
@@ -15,12 +16,15 @@ import { authRouter } from 'api/auth';
 import { pollsRouter } from 'api/poll';
 import { questionsRouter } from 'api/questions';
 import { answersRouter } from 'api/answers';
+import websocketService from 'services/websocket-service';
+import { listen } from 'services/poll-session-service';
 
 connectToDatabase();
 
 const app = express();
 const port = process.env.PORT || 8080;
 
+app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use(requestLoggerMiddleware);
@@ -39,6 +43,8 @@ app.use('/answers', answersRouter);
 
 app.use(errorHandlerMiddleware);
 
-app.listen( port, () => {
+const server = websocketService({ app, logger, listen });
+
+server.listen( port, () => {
   logger.info( `server started at http://localhost:${port}` );
 });
