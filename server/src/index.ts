@@ -16,8 +16,7 @@ import { authRouter } from 'api/auth';
 import { pollsRouter } from 'api/poll';
 import { questionsRouter } from 'api/questions';
 import { answersRouter } from 'api/answers';
-import websocketService from 'services/websocket-service';
-import { listen } from 'services/poll-session-service';
+import { createSession } from 'services/poll-session-service';
 
 connectToDatabase();
 
@@ -43,7 +42,7 @@ app.use('/answers', answersRouter);
 
 app.use(errorHandlerMiddleware);
 
-const server = websocketService({ app, logger, listen });
+const server = createSession(app);
 
 server.listen( port, () => {
   logger.info( `server started at http://localhost:${port}` );

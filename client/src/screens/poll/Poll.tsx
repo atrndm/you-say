@@ -6,9 +6,13 @@ import { getPollBySlug } from 'src/services/api';
 
 const socket = io('http://localhost:8080');
 
-const joinPoll = (pollId:string, userId:string) => socket.emit('poll-join', { pollId, userId });
-const leavePoll = (pollId:string, userId:string) => socket.emit('poll-leave', { pollId, userId });
-const onAnswer = (pollId:string, questionId:string, answerId:string, userId:string) => socket.emit('poll-answer', { pollId, questionId, answerId, userId });
+socket.on('poll:answerSelected', ({ userId, answerId }) => {
+  console.log('poll:answerSelected', { userId, answerId });
+})
+
+const joinPoll = (pollId:string, userId:string) => socket.emit('poll:join', { pollId, userId });
+const leavePoll = (pollId:string, userId:string) => socket.emit('poll:leave', { pollId, userId });
+const onAnswer = (pollId:string, questionId:string, answerId:string, userId:string) => socket.emit('poll:answer', { pollId, questionId, answerId, userId });
 
 type IParams = {
   slug: string,
