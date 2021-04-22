@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { sendEmails } from 'src/config';
 import { ErrorUnauthorized, ErrorUnknown } from 'services/errors';
 import { generateJwt, verifyJwt } from 'services/token-service';
 import { sendLoginLinkEmail } from 'services/email-service';
@@ -18,7 +19,9 @@ export const register = async (req:Request, res:Response, next:NextFunction) => 
       throw new ErrorUnknown(err);
     }
 
-    sendLoginLinkEmail({ email, token });
+    if(sendEmails){
+      sendLoginLinkEmail({ email, token });
+    }
 
     res.send({
       msg: 'Email with a login link was sent',
@@ -44,7 +47,9 @@ export const login = async (req:Request, res:Response, next:NextFunction) => {
         throw new ErrorUnknown(err);
       }
 
-      sendLoginLinkEmail({ email, token });
+      if(sendEmails) {
+        sendLoginLinkEmail({ email, token });
+      }
     } else {
       logger.info('User not found');
     }

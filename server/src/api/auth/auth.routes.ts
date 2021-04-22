@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { register, login, authenticateToken } from './auth.controller';
 
-const pollRouter = Router();
+const AuthRouter = Router();
 
-pollRouter
+AuthRouter
   .post('/register', register)
   .post('/login', login)
   .post('/authenticate', authenticateToken);
 
-  export default pollRouter;
+  export default AuthRouter;
