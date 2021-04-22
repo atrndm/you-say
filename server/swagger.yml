@@ -63,7 +63,7 @@ paths:
           $ref: "#/components/responses/ResponseUnauthorized"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
-  /polls:
+  /api/polls:
     post:
       summary: Create a new poll
       tags:
@@ -84,7 +84,7 @@ paths:
           $ref: "#/components/responses/ResponseUnauthorized"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
-  /polls/search:
+  /api/polls/search:
     post:
       summary: Find Polls by criteria
       tags:
@@ -105,7 +105,7 @@ paths:
           $ref: "#/components/responses/ResponseUnauthorized"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
-  /polls/{slug}:
+  /api/polls/{slug}:
     get:
       summary: Get a single poll by slug
       tags:
@@ -131,7 +131,7 @@ paths:
           $ref: "#/components/responses/ResponseNotFound"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
-  /polls/{pollId}:    
+  /api/polls/{pollId}:    
     post:
       summary: Update a single poll by id
       tags:
@@ -183,7 +183,7 @@ paths:
           $ref: "#/components/responses/ResponseUnauthorized"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
-  /questions:
+  /api/questions:
     post:
       summary: Create a new question
       tags:
@@ -202,7 +202,7 @@ paths:
                 $ref: "#/components/schemas/Question"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
-  /questions/{questionId}:
+  /api/questions/{questionId}:
     get:
       summary: Get a single question by id
       tags:
@@ -273,7 +273,7 @@ paths:
             $ref: "#/components/schemas/DeleteResponse"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
-  /answers:
+  /api/answers:
     post:
       summary: Create a new question
       tags:
@@ -292,7 +292,7 @@ paths:
                 $ref: "#/components/schemas/Answer"
         500:
           $ref: "#/components/responses/ResponseUnknownError"
-  /answers/{answerId}:
+  /api/answers/{answerId}:
     get:
       summary: Get a single question by id
       tags:

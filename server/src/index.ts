@@ -6,15 +6,13 @@ dotenv.config({ path: dotEnvPath});
 
 import express from 'express';
 import helmet from 'helmet';
+import { isDevelopment } from 'src/config';
 import logger, { requestLoggerMiddleware } from 'services/logger';
 import errorHandlerMiddleware from 'middleware/error-handler';
 import swaggerUIMiddleware from 'middleware/swagger-ui';
-import tokenAuth from 'middleware/token-auth';
 import { connectToDatabase } from 'src/db/connect-db';
 import { authRouter } from 'api/auth';
-import { pollsRouter } from 'api/poll';
-import { questionsRouter } from 'api/questions';
-import { answersRouter } from 'api/answers';
+import { apiRouter } from 'api/index';
 
 connectToDatabase();
 
@@ -26,16 +24,12 @@ app.use(express.json());
 app.use(requestLoggerMiddleware);
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
-
-// Routes that do not require authorization
 app.use('/', authRouter);
-app.use('/api-docs', ...swaggerUIMiddleware());
+app.use('/api', apiRouter);
 
-// Routes that DO require authorization
-app.use(tokenAuth);
-app.use('/polls', pollsRouter);
-app.use('/questions', questionsRouter);
-app.use('/answers', answersRouter);
+if (isDevelopment) {
+  app.use('/api-docs', ...swaggerUIMiddleware());
+}
 
 app.use(errorHandlerMiddleware);
 

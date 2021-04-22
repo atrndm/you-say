@@ -9,7 +9,7 @@
     "tsc": "tsc",
     "build": "npm-run-all clean lint tsc",
     "dev:start": "NODE_OPTIONS=--enable-source-maps npm-run-all build start",
-    "dev": "nodemon --watch src -e ts --exec npm run dev:start",
+    "dev": "NODE_ENV=development nodemon --watch src -e ts --exec npm run dev:start",
     "prestart": "npm run build",
     "start": "node ."
   },
